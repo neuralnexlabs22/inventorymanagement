@@ -21,4 +21,6 @@ export const authConfig = {
     },
   },
   providers: [], // Add providers with an empty array for now
+  secret: process.env.AUTH_SECRET || "super-secret-inventory-management-auth-key-2026",
+  trustHost: true,
 } satisfies NextAuthConfig;
