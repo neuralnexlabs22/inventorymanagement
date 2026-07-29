@@ -1,0 +1,150 @@
+{
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "Electronics",
+      "description": "Electronic devices and accessories",
+      "status": "ACTIVE",
+      "createdAt": "2026-07-29T15:42:34.866Z",
+      "updatedAt": "2026-07-29T15:42:34.866Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-1",
+      "productCode": "PRD-001",
+      "barcode": "8901234567890",
+      "name": "Wireless Ergonomic Mouse",
+      "description": "2.4GHz wireless mouse with DPI control",
+      "categoryId": "cat-1",
+      "brand": "Logitech",
+      "unit": "pcs",
+      "costPrice": 25,
+      "currentStock": 0,
+      "minimumStock": 15,
+      "rackLocation": "A1-02",
+      "status": "ACTIVE",
+      "createdBy": null,
+      "createdAt": "2026-07-29T15:42:34.866Z",
+      "updatedAt": "2026-07-29T15:42:34.866Z"
+    },
+    {
+      "productCode": "01",
+      "barcode": "123457890",
+      "name": "Laptop - 1 ",
+      "description": "sample ",
+      "categoryId": "cat-1",
+      "brand": "HP",
+      "unit": "pcs",
+      "costPrice": 10000,
+      "minimumStock": 10,
+      "rackLocation": "",
+      "status": "ACTIVE",
+      "id": "34aadc78-2682-4bca-ba39-ee6aceae62a2",
+      "currentStock": 0,
+      "createdAt": "2026-07-29T15:53:38.540Z",
+      "updatedAt": "2026-07-29T15:53:38.540Z"
+    },
+    {
+      "productCode": "Wireless Mouse",
+      "barcode": "",
+      "name": "Logitech M170 Wireless Mouse",
+      "description": "",
+      "categoryId": "cat-1",
+      "brand": "Logitech",
+      "unit": "pcs",
+      "costPrice": 425,
+      "minimumStock": 10,
+      "rackLocation": "",
+      "status": "ACTIVE",
+      "id": "20fbe6e5-894f-4b25-972e-a80c6b9d74ef",
+      "currentStock": 5,
+      "createdAt": "2026-07-29T16:09:31.821Z",
+      "updatedAt": "2026-07-29T16:09:31.821Z"
+    }
+  ],
+  "inwardStock": [
+    {
+      "id": "1b76fe87-b1b3-4ba1-a061-cd32eda640a5",
+      "productId": "34aadc78-2682-4bca-ba39-ee6aceae62a2",
+      "quantity": 1,
+      "costPrice": 10000,
+      "supplierName": "ramu ",
+      "referenceNumber": null,
+      "remarks": "sample",
+      "date": "2026-07-29T15:55:50.685Z"
+    },
+    {
+      "id": "ded74ae7-2839-4b81-96e9-6db3f6028e9f",
+      "productId": "20fbe6e5-894f-4b25-972e-a80c6b9d74ef",
+      "quantity": 10,
+      "costPrice": 425,
+      "supplierName": "Mayam Computers",
+      "referenceNumber": null,
+      "remarks": null,
+      "date": "2026-07-29T16:10:31.275Z"
+    }
+  ],
+  "outwardStock": [
+    {
+      "id": "321c7535-a43c-4b83-90f9-8ef662bd57d6",
+      "productId": "34aadc78-2682-4bca-ba39-ee6aceae62a2",
+      "quantity": 1,
+      "issuedTo": "sample",
+      "referenceNumber": null,
+      "remarks": "samplle ",
+      "date": "2026-07-29T15:56:07.434Z"
+    },
+    {
+      "id": "edbc9b97-791e-47f1-a29a-e727a075623d",
+      "productId": "20fbe6e5-894f-4b25-972e-a80c6b9d74ef",
+      "quantity": 5,
+      "issuedTo": "Stock ",
+      "referenceNumber": null,
+      "remarks": null,
+      "date": "2026-07-29T16:10:54.613Z"
+    }
+  ],
+  "stockMovements": [
+    {
+      "id": "01b4a276-724b-430a-b3fa-1b32c8083124",
+      "productId": "34aadc78-2682-4bca-ba39-ee6aceae62a2",
+      "movementType": "IN",
+      "quantity": 1,
+      "balanceStock": 1,
+      "referenceNumber": null,
+      "remarks": "sample",
+      "createdAt": "2026-07-29T15:55:50.685Z"
+    },
+    {
+      "id": "49299035-7013-4177-bc8e-083c1bbf1a72",
+      "productId": "34aadc78-2682-4bca-ba39-ee6aceae62a2",
+      "movementType": "OUT",
+      "quantity": 1,
+      "balanceStock": 0,
+      "referenceNumber": null,
+      "remarks": "samplle ",
+      "createdAt": "2026-07-29T15:56:07.434Z"
+    },
+    {
+      "id": "bfbab5b1-95de-4ff4-955d-ac5f3cda9afd",
+      "productId": "20fbe6e5-894f-4b25-972e-a80c6b9d74ef",
+      "movementType": "IN",
+      "quantity": 10,
+      "balanceStock": 10,
+      "referenceNumber": null,
+      "remarks": null,
+      "createdAt": "2026-07-29T16:10:31.275Z"
+    },
+    {
+      "id": "1ab1467d-abbf-47c5-a198-d35392937164",
+      "productId": "20fbe6e5-894f-4b25-972e-a80c6b9d74ef",
+      "movementType": "OUT",
+      "quantity": 5,
+      "balanceStock": 5,
+      "referenceNumber": null,
+      "remarks": null,
+      "createdAt": "2026-07-29T16:10:54.613Z"
+    }
+  ]
+}
