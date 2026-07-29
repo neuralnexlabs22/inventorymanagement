@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!process.env.DATABASE_URL || process.env.DATABASE_URL.trim() === "") {
             if (
               credentials.username === "admin" &&
-              credentials.password === "admin"
+              credentials.password === "admin123"
             ) {
               return {
                 id: "mock-user-id",
@@ -63,7 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } catch (error) {
           console.error("Auth Error:", error);
           // Fallback to mock admin if DB is unreachable
-          if (credentials.username === "admin" && credentials.password === "admin") {
+          if (credentials.username === "admin" && credentials.password === "admin123") {
             return {
               id: "mock-user-id",
               name: "Local Admin",
