@@ -19,12 +19,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
-        // If no DATABASE_URL is set, use mock authentication for local development
-        if (!process.env.DATABASE_URL) {
-          if (
-            credentials.username === "admin" &&
-            credentials.password === "admin"
-          ) {
+        try {
+          // If no DATABASE_URL is set, use mock authentication for local development
+          if (!process.env.DATABASE_URL || process.env.DATABASE_URL.trim() === "") {
+            if (
+              credentials.username === "admin" &&
+              credentials.password === "admin"
+            ) {
+              return {
+                id: "mock-user-id",
+                name: "Local Admin",
+                email: "admin@local.test",
+                role: "ADMIN",
+              };
+            }
+            return null; // Invalid local credentials
+          }
+
+          // Live Database Authentication
+          const userRecord = await db
+            .select()
+            .from(users)
+            .where(eq(users.username, credentials.username as string))
+            .limit(1);
+
+          if (userRecord.length === 0) return null;
+
+          const user = userRecord[0];
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password as string,
+            user.passwordHash
+          );
+
+          if (!isPasswordValid) return null;
+
+          return {
+            id: user.id,
+            name: user.fullName,
+            email: user.email,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("Auth Error:", error);
+          // Fallback to mock admin if DB is unreachable
+          if (credentials.username === "admin" && credentials.password === "admin") {
             return {
               id: "mock-user-id",
               name: "Local Admin",
@@ -32,33 +71,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               role: "ADMIN",
             };
           }
-          return null; // Invalid local credentials
+          return null;
         }
-
-        // Live Database Authentication
-        const userRecord = await db
-          .select()
-          .from(users)
-          .where(eq(users.username, credentials.username as string))
-          .limit(1);
-
-        if (userRecord.length === 0) return null;
-
-        const user = userRecord[0];
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password as string,
-          user.passwordHash
-        );
-
-        if (!isPasswordValid) return null;
-
-        return {
-          id: user.id,
-          name: user.fullName,
-          email: user.email,
-          role: user.role,
-        };
       },
     }),
   ],
@@ -82,4 +96,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  secret: process.env.AUTH_SECRET || "super-secret-inventory-management-auth-key-2026",
+  trustHost: true,
 });

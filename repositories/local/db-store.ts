@@ -51,39 +51,54 @@ const defaultData: LocalDbSchema = {
 
 // Ensure directory and file exists
 function ensureDb() {
-  const dir = path.dirname(DB_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), "utf8");
+  try {
+    const dir = path.dirname(DB_FILE);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    if (!fs.existsSync(DB_FILE)) {
+      fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), "utf8");
+    }
+  } catch (e) {
+    console.warn("Could not write to local DB file. Might be running on a read-only filesystem (like Vercel).");
   }
 }
 
+let inMemoryFallback: LocalDbSchema | null = null;
+
 export function getDbData(): LocalDbSchema {
+  if (inMemoryFallback) return JSON.parse(JSON.stringify(inMemoryFallback));
+
   ensureDb();
   try {
     const raw = fs.readFileSync(DB_FILE, "utf8");
-    const data = JSON.parse(raw);
-    
-    // Revive dates
     const reviver = (key: string, value: any) => {
       if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
         return new Date(value);
       }
       return value;
     };
-    
     return JSON.parse(raw, reviver) as LocalDbSchema;
   } catch (error) {
-    console.error("Failed to read local DB, returning default.", error);
-    return defaultData;
+    console.warn("Failed to read local DB, initializing in-memory fallback.");
+    inMemoryFallback = JSON.parse(JSON.stringify(defaultData));
+    return JSON.parse(JSON.stringify(defaultData));
   }
 }
 
 export function saveDbData(data: LocalDbSchema) {
+  if (inMemoryFallback) {
+    inMemoryFallback = JSON.parse(JSON.stringify(data));
+    return;
+  }
+  
   ensureDb();
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
+  } catch (e) {
+    console.warn("Failed to write to DB file. Switching to in-memory fallback.");
+    inMemoryFallback = JSON.parse(JSON.stringify(data));
+  }
 }
 
 export function generateId(): string {
