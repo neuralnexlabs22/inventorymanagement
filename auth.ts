@@ -19,6 +19,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
+        // If no DATABASE_URL is set, use mock authentication for local development
+        if (!process.env.DATABASE_URL) {
+          if (
+            credentials.username === "admin" &&
+            credentials.password === "admin"
+          ) {
+            return {
+              id: "mock-user-id",
+              name: "Local Admin",
+              email: "admin@local.test",
+              role: "ADMIN",
+            };
+          }
+          return null; // Invalid local credentials
+        }
+
+        // Live Database Authentication
         const userRecord = await db
           .select()
           .from(users)
